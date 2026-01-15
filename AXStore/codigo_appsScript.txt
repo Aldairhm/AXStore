@@ -1,0 +1,71 @@
+
+/**
+ * Constantes de Configuración
+ * * Estas variables facilitan la edición de la hoja de cálculo.
+ */
+// ⚠️ 1. REEMPLAZA ESTO: Pega aquí el ID de tu Hoja de Cálculo
+const ID_HOJA_CALCULO = ''; 
+
+// ⚠️ 2. REEMPLAZA ESTO: Nombre exacto de la pestaña donde quieres guardar los datos
+const NOMBRE_PESTAÑA_PEDIDOS = ''; 
+
+// Definimos el máximo de productos que gestionaremos en columnas separadas (debe coincidir con tu tabla)
+const MAX_PRODUCTOS = 5; 
+
+/**
+ * Función Principal para Recibir Datos del Formulario (POST Request)
+ * * @param {Object} e - Objeto de evento que contiene todos los datos enviados.
+ */
+function doPost(e) {
+  // 1. Abrir la hoja y seleccionar la pestaña
+  const hoja = SpreadsheetApp.openById(ID_HOJA_CALCULO);
+  const pestañaPedidos = hoja.getSheetByName(NOMBRE_PESTAÑA_PEDIDOS);
+
+  if (!pestañaPedidos) {
+    Logger.log('Error: No se encontró la pestaña con el nombre: ' + NOMBRE_PESTAÑA_PEDIDOS);
+    return ContentService.createTextOutput(JSON.stringify({
+        'resultado': 'error',
+        'mensaje': 'Pestaña no encontrada'
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+
+  // 2. Obtenemos los datos enviados por el formulario
+  const datos = e.parameter;
+  
+  // 3. Crear el Array de Fila (Datos Base - Columnas A a F)
+  // El orden DEBE COINCIDIR con las primeras 6 columnas de la tabla.
+  const fila = [
+    datos.fecha || '', 
+    datos.id_orden || '', 
+    datos.nombre || '', 
+    datos.telefono || '', 
+    datos.direccion || '', 
+    datos.total_general || ''
+  ];
+
+  // 4. Recorrer los posibles Productos (Columnas G en adelante)
+  for (let i = 1; i <= MAX_PRODUCTOS; i++) {
+    // Estas claves deben coincidir exactamente con lo que envía el JavaScript
+    const nombreProd = datos[`prod_${i}_nombre`] || '';
+    const cantidadProd = datos[`prod_${i}_cantidad`] || '';
+    const totalProd = datos[`prod_${i}_total`] || '';
+    
+    // Añadimos el set de 3 columnas (Nombre, Cantidad, Total)
+    fila.push(nombreProd, cantidadProd, totalProd);
+  }
+  
+  // 5. Agregar la nueva fila a la pestaña 'Pedidos'
+  pestañaPedidos.appendRow(fila);
+  
+  // Devolver una respuesta JSON (para que el fetch de tu JS sepa que fue exitoso)
+  return ContentService.createTextOutput(JSON.stringify({
+    'resultado': 'éxito',
+    'mensaje': 'Pedido guardado correctamente'
+  })).setMimeType(ContentService.MimeType.JSON);
+}
+
+// Función doGet (necesaria para el despliegue de App Web)
+function doGet(e) {
+  return HtmlService.createHtmlOutput('Acceso denegado. Use POST para enviar datos.');
+}
+

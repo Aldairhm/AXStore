@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AXStore - Variedades</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>AX <span>Store</span></h1>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#categorias">Categorias</a></li>
+                    <li><a href="#nosotros">Nosotros</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </nav>
+            <div class="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count">0</span>
+            </div>
+            <div class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="inicio" class="hero">
+            <div class="container">
+            <div class="hero-content">
+                <h2>Joyería Exclusiva Hecha a Mano</h2>
+                <p>Descubre piezas únicas que cuentan tu historia</p>
+                <a href="#categorias" class="btn">Ver Colección</a>
+            </div>
+            </div>
+        </section>
+
+        <section class="categories">
+            <div class="container">
+                <h2>Nuestras Categorías</h2>
+                <div class="category-buttons">
+                    <button class="category-btn active" data-category="all">Todos</button>
+                    <button class="category-btn" data-category="autopartes">Autopartes</button>
+                    <button class="category-btn" data-category="hogar">Hogar</button>
+                    <button class="category-btn" data-category="">....</button>
+                    <button class="category-btn" data-category="">....</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="categorias" class="products">
+            <div class="container">
+                <h2>Nuestros Productos</h2>
+                <div class="product-grid" id="product-grid">
+                    <!-- Productos se cargarán dinámicamente desde db.js -->
+                </div>
+            </div>
+        </section>
+
+        <section id="nosotros" class="about">
+            <div class="container">
+                <div class="about-content">
+                    <h2>Artesanía con Historia</h2>
+                    <p>En Luxury Jewels combinamos técnicas ancestrales con diseño contemporáneo para crear piezas que trascienden el tiempo. Cada joya es elaborada por maestros artesanos con los más altos estándares de calidad.</p>
+                    <p>Utilizamos metales preciosos y gemas certificadas, asegurando autenticidad y durabilidad en cada creación.</p>
+                </div>
+                <div class="about-image">
+                    <img src="images/about.png" alt="Artesano trabajando">
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <div class="feature-box">
+                    <i class="fas fa-gem"></i>
+                    <h3>Materiales Premium</h3>
+                    <p>Oro 18k, plata esterlina y gemas naturales</p>
+                </div>
+                <div class="feature-box">
+                    <i class="fas fa-award"></i>
+                    <h3>Garantía de Calidad</h3>
+                    <p>Certificados de autenticidad incluidos</p>
+                </div>
+                <div class="feature-box">
+                    <i class="fas fa-heart"></i>
+                    <h3>Hecho con Amor</h3>
+                    <p>Cada pieza es única y elaborada a mano</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="cart-modal" id="cart-modal">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h3>Tu Carrito</h3>
+                <span class="close-cart">&times;</span>
+            </div>
+            <div class="cart-body" id="cart-body">
+                <!-- Productos del carrito se cargarán aquí -->
+                <p class="empty-cart">Tu carrito está vacío</p>
+            </div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <span>Total:</span>
+                    <span id="cart-total">$0.00</span>
+                </div>
+                <button class="btn checkout-btn">Finalizar Compra</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Checkout -->
+<div class="checkout-modal" id="checkout-modal">
+    <div class="checkout-content">
+        <div class="checkout-header">
+            <h3>Finalizar Compra</h3>
+            <span class="close-checkout">&times;</span>
+        </div>
+        <div class="checkout-body">
+            <form id="checkout-form">
+                <div class="form-group">
+                    <label for="customer-name">Nombre Completo *</label>
+                    <input type="text" id="customer-name" name="nombre" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="customer-phone">Teléfono *</label>
+                    <input type="tel" id="customer-phone" name="telefono" required>
+                </div>
+                <div class="form-group">
+                    <label for="customer-address">Dirección *</label>
+                    <textarea id="customer-address" name="direccion" rows="3" required></textarea>
+                </div>
+                <div class="checkout-summary">
+                    <h4>Resumen del Pedido</h4>
+                    <div id="checkout-items"></div>
+                    <div class="checkout-total">
+                        <span>Total:</span>
+                        <span id="checkout-total">$0.00</span>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary back-to-cart">Volver al Carrito</button>
+                    <button type="submit" class="btn checkout-btn">Confirmar Pedido</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Confirmación -->
+<div class="confirmation-modal" id="confirmation-modal">
+    <div class="confirmation-content">
+        <div class="confirmation-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h3>¡Pedido Confirmado!</h3>
+        <p id="confirmation-message">Tu pedido ha sido procesado exitosamente.</p>
+        <div class="confirmation-actions">
+            <button class="btn close-confirmation">Continuar Comprando</button>
+        </div>
+    </div>
+</div>
+
+    <footer id="contacto">
+        <div class="container">
+            <div class="footer-section">
+                <h3>Contacto</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Avenida Elegante 456, Ciudad</p>
+                <p><i class="fas fa-phone"></i> +1 234 567 890</p>
+                <p><i class="fas fa-envelope"></i> info@luxuryjewels.com</p>
+            </div>
+            <div class="footer-section">
+                <h3>Horario</h3>
+                <p>Lunes - Viernes: 10am - 8pm</p>
+                <p>Sábado: 11am - 6pm</p>
+                <p>Domingo: Cerrado</p>
+            </div>
+            <div class="footer-section">
+                <h3>Síguenos</h3>
+                <div class="social-icons">
+                    
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2026 AXStore. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="db.js"></script>
+    <script src="cart.js"></script>
+    <script src="checkout.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
